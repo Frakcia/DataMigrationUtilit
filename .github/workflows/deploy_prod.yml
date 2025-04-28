@@ -1,0 +1,44 @@
+name: Manual_Deploy
+on:
+  workflow_dispatch:
+
+env:
+    DOTNETVERSION: 8.0
+    PATH_SLN: DataMigrationUtilit.CLI
+    PATH_PROJECT_FOLDER: DataMigrationUtilit.CLI
+    PROJECT_NAME: DataMigrationUtilit
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK ${{env.DOTNETVERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version:  '${{env.DOTNETVERSION}}'
+
+      - name: Restore nuget packages
+        run: |
+            dotnet restore 
+          # dotnet restore ${{ env.PATH_SLN }}
+
+      - name: Build the application
+        run: dotnet build --configuration Release
+
+      - name: Publish the application
+        run: dotnet publish --configuration Release --output ./publish
+
+      - name: Upload published files
+        uses: actions/upload-artifact@v2
+        with:
+          name: published-files
+          path: ./publish
+
+      # - name: Deploy to server
+      #   run: |
+          # Здесь добавьте команды для деплоя, например, копирование файлов на сервер
+          # echo "Deploying application..."
+
