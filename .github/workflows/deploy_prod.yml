@@ -53,3 +53,8 @@ jobs:
           # Здесь добавьте команды для деплоя, например, копирование файлов на сервер
           # echo "Deploying application..."
 
+      - uses: geekyeggo/delete-artifact@v2
+        name: Delete artefact
+        with:
+            name: published-files
+
