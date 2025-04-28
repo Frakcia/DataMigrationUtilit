@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 env:
-    DOTNETVERSION: 8.0
+    DOTNETVERSION: 8.0.x
     PATH_SLN: DataMigrationUtilit.CLI
     PATH_PROJECT_FOLDER: DataMigrationUtilit.CLI
     PROJECT_NAME: DataMigrationUtilit
@@ -12,18 +12,28 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
-      - name: Setup .NET SDK ${{env.DOTNETVERSION}}
-        uses: actions/setup-dotnet@v3
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version:  '${{env.DOTNETVERSION}}'
 
-      - name: Restore nuget packages
-        run: |
-            dotnet restore 
-          # dotnet restore ${{ env.PATH_SLN }}
+      - name: Restore dependencies
+        run: dotnet restore
+          
+      # - name: Check out the repo
+      #   uses: actions/checkout@v3
+
+      # - name: Setup .NET SDK ${{env.DOTNETVERSION}}
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version:  '${{env.DOTNETVERSION}}'
+
+      # - name: Restore nuget packages
+      #   run: |
+      #       dotnet restore 
+      #     # dotnet restore ${{ env.PATH_SLN }}
 
       - name: Build the application
         run: dotnet build --configuration Release
