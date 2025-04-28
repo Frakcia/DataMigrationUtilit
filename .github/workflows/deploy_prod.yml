@@ -40,6 +40,7 @@ jobs:
 
       - name: Publish the application
         run: dotnet publish --configuration Release --output ./publish
+        # run: dotnet publish ${{ env.PATH_SLN }} --configuration Release --output ./publish --self-contained true --runtime win-x64
 
       - name: Upload published files
         uses: actions/upload-artifact@v4
