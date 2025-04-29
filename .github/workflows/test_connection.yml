@@ -1,0 +1,20 @@
+name: Manula_Test_Con
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4   
+
+      - name: Test SSH Connection
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_IP }}
+          username: ${{ secrets.DPLY_USER }}
+          # password: ${{ secrets.DPLY_PWD }}
+          key: ${{ secrets.KEY }}
+          port: 22
+          script: |
+            echo "Connection successful!"
