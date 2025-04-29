@@ -39,6 +39,10 @@ jobs:
           name: my-artifact
           path: distfiles
 
+      - name: Copy docker-compose.yml to distfiles
+        run: |
+          cp docker-compose.yml distfiles/
+
       - name: copy file to server
         uses: appleboy/scp-action@v1
         with:
