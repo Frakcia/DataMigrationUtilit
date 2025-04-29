@@ -45,6 +45,7 @@ jobs:
           host: ${{ secrets.DEPLOY_IP }}
           username: ${{ secrets.DPLY_USER }}
           password: ${{ secrets.DPLY_PWD }}
+          key: ${{ secrets.KEY }}
           overwrite: true
           source: distfiles/*
           target: /var/stafftestdir/
