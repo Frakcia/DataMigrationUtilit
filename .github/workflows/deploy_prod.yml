@@ -50,8 +50,8 @@ jobs:
           source: distfiles/*
           target: /var/stafftestdir/
 
-      - uses: geekyeggo/delete-artifact@v2
-        name: Delete artefact
-        with:
-            name: my-artifact
+      # - uses: geekyeggo/delete-artifact@v2
+      #   name: Delete artefact
+      #   with:
+      #       name: my-artifact
 
