@@ -41,7 +41,8 @@ jobs:
 
       - name: Copy docker-compose.yml to distfiles
         run: |
-          cp docker-compose.yml distfiles/
+          cp docker-compose.yml distfiles/;
+          cp Dockerfile distfiles/
 
       - name: copy file to server
         uses: appleboy/scp-action@v1
@@ -60,6 +61,10 @@ jobs:
           username: ${{ secrets.DPLY_USER }}
           key: ${{ secrets.KEY }}
           script: |
+            cp /var/stafftestdir/distfiles/Dockerfile /var/finaldockertestdir/; 
+            cp /var/stafftestdir/distfiles/docker-compose.yml /var/finaldockertestdir/; 
+            rm -f /var/stafftestdir/distfiles/Dockerfile;
+            rm -f /var/stafftestdir/distfiles/docker-compose.yml;
             cp -r /var/stafftestdir/distfiles/* /var/finaltestdir/; 
             # docker-compose up -d; 
             rm -rf /var/stafftestdir/distfiles
