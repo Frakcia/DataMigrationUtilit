@@ -44,7 +44,7 @@ jobs:
         with:
           host: ${{ secrets.DEPLOY_IP }}
           username: ${{ secrets.DPLY_USER }}
-          password: ${{ secrets.DPLY_PWD }}
+          # password: ${{ secrets.DPLY_PWD }}
           key: ${{ secrets.KEY }}
           overwrite: true
           source: distfiles/*
