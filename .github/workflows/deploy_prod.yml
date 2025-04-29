@@ -44,11 +44,21 @@ jobs:
         with:
           host: ${{ secrets.DEPLOY_IP }}
           username: ${{ secrets.DPLY_USER }}
-          # password: ${{ secrets.DPLY_PWD }}
           key: ${{ secrets.KEY }}
           overwrite: true
           source: distfiles/*
           target: /var/stafftestdir/
+
+      - name: Update Server-Side Scripts
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_IP }}
+          username: ${{ secrets.DPLY_USER }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cp -r /var/stafftestdir/distfiles/* /var/finaltestdir/; 
+            # docker-compose up -d; 
+            rm -rf /var/stafftestdir/distfiles
 
       # - uses: geekyeggo/delete-artifact@v2
       #   name: Delete artefact
