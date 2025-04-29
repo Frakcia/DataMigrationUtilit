@@ -42,19 +42,28 @@ jobs:
         run: dotnet publish --configuration Release --output ./publish
         # run: dotnet publish ${{ env.PATH_SLN }} --configuration Release --output ./publish --self-contained true --runtime win-x64
 
-      - name: Upload published files
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: published-files
+          name: my-artifact
           path: ./publish
 
-      # - name: Deploy to server
-      #   run: |
-          # Здесь добавьте команды для деплоя, например, копирование файлов на сервер
-          # echo "Deploying application..."
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+          path: distfiles
+
+      - name: copy file to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_IP }}
+          username: ${{ secrets.DPLY_USER }}
+          password: ${{ secrets.DPLY_PWD }}
+          overwrite: true
+          source: ./publish/*
+          target: /var/stafftestdir/
 
       - uses: geekyeggo/delete-artifact@v2
         name: Delete artefact
         with:
-            name: published-files
+            name: my-artifact
 
