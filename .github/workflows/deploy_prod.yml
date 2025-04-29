@@ -21,19 +21,6 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-          
-      # - name: Check out the repo
-      #   uses: actions/checkout@v3
-
-      # - name: Setup .NET SDK ${{env.DOTNETVERSION}}
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version:  '${{env.DOTNETVERSION}}'
-
-      # - name: Restore nuget packages
-      #   run: |
-      #       dotnet restore 
-      #     # dotnet restore ${{ env.PATH_SLN }}
 
       - name: Build the application
         run: dotnet build --configuration Release
@@ -59,7 +46,7 @@ jobs:
           username: ${{ secrets.DPLY_USER }}
           password: ${{ secrets.DPLY_PWD }}
           overwrite: true
-          source: ./publish/*
+          source: distfiles/*
           target: /var/stafftestdir/
 
       - uses: geekyeggo/delete-artifact@v2
