@@ -4,9 +4,9 @@ on:
 
 env:
     DOTNETVERSION: 8.0.x
-    PATH_SLN: DataMigrationUtilit.CLI
-    PATH_PROJECT_FOLDER: DataMigrationUtilit.CLI
-    PROJECT_NAME: DataMigrationUtilit
+    DOCKER_FILE_PATH: /var/finaldockertestdir/
+    PUBLISH_FILE_PATH: /var/finaltestdir/
+    DOCKER_COMPOSE_FILENAME: docker-compose.Development.yml
 
 jobs:
   build_and_deploy:
@@ -27,7 +27,6 @@ jobs:
 
       - name: Publish the application
         run: dotnet publish --configuration Release --output ./publish
-        # run: dotnet publish ${{ env.PATH_SLN }} --configuration Release --output ./publish --self-contained true --runtime win-x64
 
       - uses: actions/upload-artifact@v4
         with:
@@ -50,6 +49,7 @@ jobs:
           host: ${{ secrets.DEPLOY_IP }}
           username: ${{ secrets.DPLY_USER }}
           key: ${{ secrets.KEY }}
+          port: 22
           overwrite: true
           source: distfiles/*
           target: /var/stafftestdir/
@@ -61,16 +61,12 @@ jobs:
           username: ${{ secrets.DPLY_USER }}
           key: ${{ secrets.KEY }}
           script: |
-            cp /var/stafftestdir/distfiles/Dockerfile /var/finaldockertestdir/; 
-            cp /var/stafftestdir/distfiles/docker-compose.yml /var/finaldockertestdir/; 
+            cp /var/stafftestdir/distfiles/Dockerfile ${{ env.DOCKER_FILE_PATH }}; 
+            cp /var/stafftestdir/distfiles/docker-compose.yml ${{ env.DOCKER_FILE_PATH }}; 
             rm -f /var/stafftestdir/distfiles/Dockerfile;
             rm -f /var/stafftestdir/distfiles/docker-compose.yml;
-            cp -r /var/stafftestdir/distfiles/* /var/finaltestdir/; 
-            # docker-compose up -d; 
-            rm -rf /var/stafftestdir/distfiles
-
-      # - uses: geekyeggo/delete-artifact@v2
-      #   name: Delete artefact
-      #   with:
-      #       name: my-artifact
+            cp -r /var/stafftestdir/distfiles/* ${{ env.PUBLISH_FILE_PATH }}; 
+            cd ${{ env.DOCKER_FILE_PATH }};
+            # docker-compose -f ${{ env.DOCKER_COMPOSE_FILENAME }} down && docker-compose -f ${{ env.DOCKER_COMPOSE_FILENAME }} up -d;
+            rm -rf /var/stafftestdir/distfiles;
 
